@@ -1,0 +1,15 @@
+.git
+.env
+.env.local
+data
+workspace
+secrets
+frontend/node_modules
+frontend/dist
+frontend/.tools
+**/__pycache__
+*.pyc
+.venv
+venv
+*.log
+.DS_Store

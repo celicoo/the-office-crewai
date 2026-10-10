@@ -1,0 +1,12 @@
+fastapi>=0.110.0
+uvicorn[standard]>=0.30.0
+python-dotenv>=1.0.0
+PyYAML>=6.0
+httpx>=0.27.0
+playwright>=1.45.0
+google-genai>=1.0.0
+epochdb>=1.11.2
+crewai==1.15.26
+Markdown>=3.5.0
+pydantic>=2.0.0
+numpy

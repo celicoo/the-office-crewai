@@ -1,0 +1,44 @@
+# Local only. The published port is bound to 127.0.0.1.
+#
+#   cp .env.example .env
+#   docker compose -f docker/docker-compose.yml --env-file .env up --build
+#   → http://127.0.0.1:8780
+#
+# Secrets come from env_file. Do not re-declare them under environment.
+
+name: the-office-crewai
+
+services:
+  office:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: the-office-crewai
+    ports:
+      - "127.0.0.1:${OFFICE_PORT:-8780}:8780"
+    env_file:
+      - ../.env
+    environment:
+      OFFICE_HOST: 0.0.0.0
+      OFFICE_READ_ONLY: ${OFFICE_READ_ONLY:-true}
+      OFFICE_CONFIG: /app/config/office.yml
+      OFFICE_STORAGE_DIR: /app/data/blackboard
+      COMPANY_WORKSPACE: /app/workspace
+      OFFICE_WORKSPACE: /app/workspace
+      BLOGGER_TOKEN_FILE: /app/data/blogger_credentials.json
+      BLOGGER_CREDENTIALS_SOURCE: /app/secrets/blogger_credentials.json
+      OFFICE_KICKOFF_ON_START: ${OFFICE_KICKOFF_ON_START:-false}
+      OFFICE_SCHEDULER_ENABLED: ${OFFICE_SCHEDULER_ENABLED:-true}
+      APP_URL: http://127.0.0.1:${OFFICE_PORT:-8780}
+    volumes:
+      - ../config:/app/config:ro
+      - ../workspace:/app/workspace
+      - ${OFFICE_DATA_HOST:-../data}:/app/data
+      - ../secrets:/app/secrets:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8780/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
