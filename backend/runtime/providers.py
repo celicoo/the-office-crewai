@@ -4,7 +4,7 @@ A model is written ``<provider>/<model>``:
 
     gemini/gemini-3.5-flash-lite
     deepseek/deepseek-flash
-    fireworks/accounts/fireworks/models/deepseek-v4-flash-0731
+    fireworks/accounts/fireworks/models/deepseek-v4p1-flash
     openai/<model>      any OpenAI-compatible server at OFFICE_OPENAI_BASE_URL
 
 A bare name, or a Gemini resource name such as models/gemini-2.5-flash, means

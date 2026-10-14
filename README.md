@@ -101,7 +101,7 @@ Desks run on Gemini unless you pick something else. A model is written `<provide
 |----------|---------------|-----|
 | `gemini` (default) | `gemini/gemini-3.5-flash-lite` | `GEMINI_API_KEY` |
 | `deepseek` | `deepseek/deepseek-flash` | `DEEPSEEK_API_KEY` |
-| `fireworks` | `fireworks/accounts/fireworks/models/deepseek-v4-flash-0731` | `FIREWORKS_API_KEY` |
+| `fireworks` | `fireworks/accounts/fireworks/models/deepseek-v4p1-flash` | `FIREWORKS_API_KEY` |
 | `openai` | `openai/<model>` on any OpenAI-compatible server (vLLM, Ollama, a gateway) | `OFFICE_OPENAI_API_KEY` and `OFFICE_OPENAI_BASE_URL` |
 
 `OFFICE_TEXT_MODEL` sets the model for every desk. A desk can send its own work elsewhere with `model:` in `config/office.yml`:
@@ -109,13 +109,13 @@ Desks run on Gemini unless you pick something else. A model is written `<provide
 ```yaml
   - id: laura
     name: Laura
-    model: fireworks/accounts/fireworks/models/deepseek-v4-flash-0731
+    model: fireworks/accounts/fireworks/models/deepseek-v4p1-flash
 ```
 
 - DeepSeek desks run with thinking off. In thinking mode with tools, DeepSeek requires `reasoning_content` to be sent back on every request, and CrewAI does not send it.
 - Fireworks and `openai/` servers are called through Chat Completions only, never the Responses API, which can store conversations on the provider.
 - Live voice (**Falar**) and cover images exist only on Gemini. Without Gemini, **Falar** is hidden, the first-person view says voice is unavailable, and Bete publishes text-only posts.
-- Board recall follows `OFFICE_EMBED_MODEL`: `gemini/…`, `fireworks/…`, `openai/…`, `local/<sentence-transformers model>`, or `off`. `local/…` needs `pip install "epochdb[embeddings]"`, which brings in PyTorch and is not in the default install or image; without it, recall stays off and the log says why. Fireworks embedding ids start with `fireworks/`, so the value repeats it: `fireworks/fireworks/qwen3-embedding-0p6b`. Changing the embedding model or `EPOCHDB_DIM` needs a fresh `data/`.
+- Board recall follows `OFFICE_EMBED_MODEL`: `gemini/…`, `fireworks/…`, `openai/…`, `local/<sentence-transformers model>`, or `off`. `local/…` needs `pip install "epochdb[embeddings]"`, which brings in PyTorch and is not in the default install or image; without it, recall stays off and the log says why. Fireworks embedding ids start with `fireworks/`, so the value repeats it: `fireworks/fireworks/qwen3-embedding-8b`. Changing the embedding model or `EPOCHDB_DIM` needs a fresh `data/`.
 - An unknown provider name stops the server at startup and names the desk.
 
 ## Anonymous mode
@@ -135,8 +135,8 @@ A Fireworks-only `.env`:
 ```bash
 OFFICE_ALLOWED_PROVIDERS=fireworks
 FIREWORKS_API_KEY=...
-OFFICE_TEXT_MODEL=fireworks/accounts/fireworks/models/deepseek-v4-flash-0731
-OFFICE_EMBED_MODEL=fireworks/fireworks/qwen3-embedding-0p6b
+OFFICE_TEXT_MODEL=fireworks/accounts/fireworks/models/deepseek-v4p1-flash
+OFFICE_EMBED_MODEL=fireworks/fireworks/qwen3-embedding-8b
 EPOCHDB_DIM=768
 ```
 
